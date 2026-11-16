@@ -1,0 +1,7 @@
+{
+  "name": "country-search",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A country search application for the RS School Fullstack Engineering course",
+  "type": "module"
+}
