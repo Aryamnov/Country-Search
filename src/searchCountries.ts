@@ -5,6 +5,10 @@ export interface CountryResponse {
   region?: string | null;
   population?: number | null;
   languages?: ReadonlyArray<{ name: string }> | null;
+  subregion?: string | null;
+  area?: number | null;
+  borders?: readonly string[] | null;
+  currencies?: ReadonlyArray<{ code: string; name: string }> | null;
 }
 
 export class HttpError extends Error {
