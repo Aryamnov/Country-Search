@@ -9,13 +9,13 @@ export interface CountryCardData {
   languages: string[];
 }
 
-export const mapCountryResponse: (
-  raw: CountryResponse,
-) => CountryCardData = () => ({
-  name: '',
-  flagUrl: null,
-  capital: null,
-  region: null,
-  population: null,
-  languages: [],
-});
+export function mapCountryResponse(raw: CountryResponse): CountryCardData {
+  return {
+    name: raw.name,
+    flagUrl: raw.flags?.svg || raw.flags?.png || null,
+    capital: raw.capital ?? null,
+    region: raw.region ?? null,
+    population: raw.population ?? null,
+    languages: raw.languages?.map((language) => language.name) ?? [],
+  };
+}
