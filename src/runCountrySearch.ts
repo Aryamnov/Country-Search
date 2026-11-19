@@ -1,4 +1,10 @@
-import type { CountryResponse } from './searchCountries.js';
+import {
+  HttpError,
+  searchCountries,
+  type CountryResponse,
+} from './searchCountries.js';
+
+const REQUEST_TIMEOUT_MS = 10_000;
 
 export type SearchOutcome =
   | { status: 'results'; countries: CountryResponse[] }
@@ -7,8 +13,40 @@ export type SearchOutcome =
   | { status: 'error'; reason: 'timeout' | 'network'; retryQuery: string }
   | { status: 'error'; reason: 'http'; httpStatus: number; retryQuery: string };
 
-export const runCountrySearch: (
+export async function runCountrySearch(
   query: string,
   signal: AbortSignal,
-) => Promise<SearchOutcome> = () =>
-  Promise.resolve({ status: 'results', countries: [] });
+): Promise<SearchOutcome> {
+  const requestSignal = AbortSignal.any([
+    signal,
+    AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  ]);
+
+  try {
+    const countries = await searchCountries(query, requestSignal);
+    requestSignal.throwIfAborted();
+
+    return countries.length === 0
+      ? { status: 'empty' }
+      : { status: 'results', countries };
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      return { status: 'aborted' };
+    }
+
+    if (error instanceof DOMException && error.name === 'TimeoutError') {
+      return { status: 'error', reason: 'timeout', retryQuery: query };
+    }
+
+    if (error instanceof HttpError) {
+      return {
+        status: 'error',
+        reason: 'http',
+        httpStatus: error.status,
+        retryQuery: query,
+      };
+    }
+
+    return { status: 'error', reason: 'network', retryQuery: query };
+  }
+}
