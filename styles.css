@@ -1,0 +1,49 @@
+body {
+  margin: 1rem;
+  font:
+    1rem/1.5 system-ui,
+    sans-serif;
+}
+
+main {
+  max-width: 38rem;
+}
+
+label,
+.country-card span {
+  display: block;
+}
+
+input,
+button {
+  font: inherit;
+}
+
+input {
+  box-sizing: border-box;
+  width: min(100%, 22rem);
+}
+
+#results {
+  padding: 0;
+  list-style: none;
+}
+
+#results li {
+  margin-bottom: 0.5rem;
+}
+
+.country-card {
+  width: 100%;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.country-card img {
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+dialog {
+  max-width: min(30rem, calc(100% - 3rem));
+}
