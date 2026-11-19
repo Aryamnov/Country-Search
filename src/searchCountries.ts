@@ -3,10 +3,26 @@ export interface CountryResponse {
 }
 
 export class HttpError extends Error {
-  declare readonly status: number;
+  constructor(readonly status: number) {
+    super(`HTTP ${status}`);
+    this.name = 'HttpError';
+  }
 }
 
-export const searchCountries: (
+export async function searchCountries(
   query: string,
   signal: AbortSignal,
-) => Promise<CountryResponse[]> = () => Promise.resolve([]);
+): Promise<CountryResponse[]> {
+  const url = `https://countries.dev/name/${encodeURIComponent(query)}`;
+  const response = await fetch(url, { signal });
+
+  if (response.status === 404) {
+    return [];
+  }
+
+  if (!response.ok) {
+    throw new HttpError(response.status);
+  }
+
+  return (await response.json()) as CountryResponse[];
+}
