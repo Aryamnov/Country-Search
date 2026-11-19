@@ -1,0 +1,24 @@
+{
+  "newZealand": {
+    "name": "New Zealand",
+    "alpha2Code": "NZ",
+    "flag": "🇳🇿",
+    "flags": {
+      "svg": "https://flagcdn.com/nz.svg",
+      "png": "https://flagcdn.com/w320/nz.png"
+    },
+    "capital": "Wellington",
+    "region": "Oceania",
+    "population": 5084300,
+    "languages": [
+      { "name": "English", "iso639_1": "en" },
+      { "name": "Māori", "iso639_1": "mi" }
+    ]
+  },
+  "withoutOptionalFields": {
+    "name": "Example Territory",
+    "capital": null,
+    "population": 0,
+    "languages": null
+  }
+}

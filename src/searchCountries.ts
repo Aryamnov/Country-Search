@@ -1,5 +1,10 @@
 export interface CountryResponse {
   name: string;
+  flags?: { svg?: string; png?: string } | null;
+  capital?: string | null;
+  region?: string | null;
+  population?: number | null;
+  languages?: ReadonlyArray<{ name: string }> | null;
 }
 
 export class HttpError extends Error {
